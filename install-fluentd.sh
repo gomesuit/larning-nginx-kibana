@@ -4,8 +4,9 @@ curl -L https://toolbelt.treasuredata.com/sh/install-redhat-td-agent2.sh | sh
 
 /opt/td-agent/embedded/bin/fluent-gem install fluent-plugin-elasticsearch
 
-sed -e -i 's/TD_AGENT_USER=td-agent/TD_AGENT_USER=root/' /etc/init.d/td-agent
-sed -e -i 's/TD_AGENT_GROUP=td-agent/TD_AGENT_GROUP=root/' /etc/init.d/td-agent
+sed -i -e 's/TD_AGENT_USER=td-agent/TD_AGENT_USER=root/' /etc/init.d/td-agent
+sed -i -e 's/TD_AGENT_GROUP=td-agent/TD_AGENT_GROUP=root/' /etc/init.d/td-agent
+systemctl daemon-reload
 
 tee /etc/td-agent/td-agent.conf <<-EOF
 <source>
@@ -28,9 +29,8 @@ tee /etc/td-agent/td-agent.conf <<-EOF
     type elasticsearch
     host 127.0.0.1
     port 9200
-    type_name access
     logstash_format true
-    logstash_prefix test
+    logstash_prefix nginx
     flush_interval 3s
   </store>
 </match>
